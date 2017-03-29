@@ -6,16 +6,16 @@ function getApiData(searchItem, callback) {
 		part: 'snippet',
 		key: 'AIzaSyC65vVs3VxOP4s8DH92WGLYJd8zTc5qqlU',
 		q: searchItem,
+		type: 'video'
 	}
 	$.getJSON(youTubeUrl, query, callback);
 }
 
 function displayYouTubeResults(data) {
 	var results = '';
-	console.log(data.items);
 	if (data.items) {
 		data.items.forEach(function(item) {
-			results += '<img src="' + item.snippet.thumbnail.medium.url + '">"';
+			results += '<img src="' + item.snippet.thumbnails.medium.url + '">';
 		})
 	}
 	else {
