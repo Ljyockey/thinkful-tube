@@ -30,7 +30,8 @@ function displayYouTubeResults(data) {
 			results += '<p>' + item.snippet.title + '<br>' +
 				'<a data-featherlight="iframe" href="https://www.youtube.com/embed/' + 
 				item.id.videoId + '">' +
-				'<img src="' + item.snippet.thumbnails.medium.url + '"></a></p>';
+				'<img src="' + item.snippet.thumbnails.medium.url + '"></a><br>' +
+				'<a href="https://www.youtube.com/channel/' + item.snippet.channelId + '" target="blank">Channel</a></p>';
 		})
 		//checks if there needs to be a previous page button and calls its function
 		if (data.prevPageToken) {
@@ -48,6 +49,7 @@ function displayYouTubeResults(data) {
 		}
 	$('.results').html(results);
 	// results.featherlight();
+	// $.featherlight.getContent();
 }
 
 function prevPageListener(token, query) {
