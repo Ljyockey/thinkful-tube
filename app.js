@@ -24,13 +24,12 @@ function displayYouTubeResults(data) {
 
 	//checks if sure returned any results
 	if (data.items.length !== 0) {
-		console.log(data);
 		data.items.forEach(function(item) {
-			results += '<p>' + item.snippet.title + '<br>' +
-				'<a data-featherlight="iframe" href="https://www.youtube.com/embed/' + 
+			results += '<p>' + item.snippet.title + ' - <a href="https://www.youtube.com/channel/' + item.snippet.channelId + 
+				'" target="blank">' + item.snippet.channelTitle + '</a><br>' +
+				'<a class="video" data-featherlight="iframe" href="https://www.youtube.com/embed/' + 
 				item.id.videoId + '">' +
-				'<img src="' + item.snippet.thumbnails.medium.url + '"></a><br>' +
-				'<a href="https://www.youtube.com/channel/' + item.snippet.channelId + '" target="blank">Channel</a></p>';
+				'<img src="' + item.snippet.thumbnails.medium.url + '"></a><br></p>';
 		})
 		//checks if there needs to be a previous page button and calls its function
 		if (data.prevPageToken) {
@@ -47,7 +46,7 @@ function displayYouTubeResults(data) {
 		results += '<p>No results</p>';
 		}
 	$('.results').html(results);
-	$('.results a').featherlight();
+	$('.video').featherlight();
 }
 
 function prevPageListener(token, query) {
