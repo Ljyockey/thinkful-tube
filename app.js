@@ -1,5 +1,6 @@
 var youTubeUrl = 'https://www.googleapis.com/youtube/v3/search';
-
+var nextPageButton = ('<button class="nextPage" type="submit">' +
+		'Next</button>');
 
 function getApiData(searchItem, callback) {
 	var query = {
@@ -13,17 +14,21 @@ function getApiData(searchItem, callback) {
 
 function displayYouTubeResults(data) {
 	var results = '';
-	if (data.items) {
+	if (data.items.length !== 0) {
 		console.log(data);
 		data.items.forEach(function(item) {
-			results += '<a href="https://www.youtube.com/watch?v=' + 
-			item.id.videoId + '">' +
-			'<img src="' + item.snippet.thumbnails.medium.url + '"></a>';
+			results += '<p>' + item.snippet.title + '<br>' +
+			'<a href="https://www.youtube.com/watch?v=' + 
+			item.id.videoId + '" target="blank">' +
+			'<img src="' + item.snippet.thumbnails.medium.url + '"></a></p>';
 		})
-	}
+		if (data.pageInfo.resultsPerPage < data.pageInfo.totalResults) {
+			results += nextPageButton;
+			}
+		}
 	else {
 		results += '<p>No results</p>';
-	}
+		}
 	$('.results').html(results);
 }
 
