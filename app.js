@@ -17,19 +17,33 @@ function getApiData(searchItem, callback, token) {
 	$.getJSON(youTubeUrl, query, callback);
 }
 
+function getChannelData(channel, callback) {
+	var query = {
+		part: 'snippet',
+		key: 'AIzaSyC65vVs3VxOP4s8DH92WGLYJd8zTc5qqlU',
+		channelId: channel,
+		type: 'video'
+	}
+	$.getJSON(youTubeUrl, query, callback);
+}
+
+
+
 //displays YouTube data to DOM
 function displayYouTubeResults(data) {
 	var results = '';
 	var pageQuery = $('.search-form').find('.query').val();
+	console.log(data);
 
 	//checks if sure returned any results
 	if (data.items.length !== 0) {
 		data.items.forEach(function(item) {
-			results += '<p>' + item.snippet.title + ' - <a href="https://www.youtube.com/channel/' + item.snippet.channelId + 
-				'" target="blank">' + item.snippet.channelTitle + '</a><br>' +
+			results += '<p>' + item.snippet.title + ' - <button type="submit" class="channel">' +
+			 item.snippet.channelTitle + '</button><br>' +
 				'<a class="video" data-featherlight="iframe" href="https://www.youtube.com/embed/' + 
 				item.id.videoId + '">' +
-				'<img src="' + item.snippet.thumbnails.medium.url + '"></a><br></p>';
+				'<img src="' + item.snippet.thumbnails.medium.url + '"></a><br></p><p class="channelThumbnails"></p><p class="channel-more"></p>';
+			channelLister(item.snippet.channelId)
 		})
 		//checks if there needs to be a previous page button and calls its function
 		if (data.prevPageToken) {
@@ -48,6 +62,21 @@ function displayYouTubeResults(data) {
 	$('.results').html(results);
 	$('.video').featherlight();
 }
+
+function displayChannelThumbnails(data) {
+	var results = '';
+	data.items.forEach(function(item) {
+		results += '<img src="' + item.snippet.thumbnails.default.url + '">';
+	})
+	$('.channel-more').html(results);
+}
+
+function channelLister(channel) {
+	$('.results').on('click', '.channel', function(e){
+		getChannelData(channel, displayChannelThumbnails);
+	})	
+}
+
 
 function prevPageListener(token, query) {
 	$('.results').on('click', '.prevPage', function(e){
