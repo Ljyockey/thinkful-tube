@@ -14,8 +14,11 @@ function getApiData(searchItem, callback) {
 function displayYouTubeResults(data) {
 	var results = '';
 	if (data.items) {
+		console.log(data);
 		data.items.forEach(function(item) {
-			results += '<img src="' + item.snippet.thumbnails.medium.url + '">';
+			results += '<a href="https://www.youtube.com/watch?v=' + 
+			item.id.videoId + '">' +
+			'<img src="' + item.snippet.thumbnails.medium.url + '"></a>';
 		})
 	}
 	else {
