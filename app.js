@@ -3,7 +3,6 @@ var prevPageButton = ('<button class="prevPage" type="submit">' +
 		'Previous</button>');
 var nextPageButton = ('<button class="nextPage" type="submit">' +
 		'Next</button>');
-// $.featherlight.autoBind = true;
 
 
 //retrieves data from YouTube
@@ -48,8 +47,7 @@ function displayYouTubeResults(data) {
 		results += '<p>No results</p>';
 		}
 	$('.results').html(results);
-	// results.featherlight();
-	// $.featherlight.getContent();
+	$('.results a').featherlight();
 }
 
 function prevPageListener(token, query) {
