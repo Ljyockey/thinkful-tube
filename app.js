@@ -3,6 +3,7 @@ var prevPageButton = ('<button class="prevPage" type="submit">' +
 		'Previous</button>');
 var nextPageButton = ('<button class="nextPage" type="submit">' +
 		'Next</button>');
+var targetImageTag;
 
 
 //retrieves data from YouTube
@@ -33,16 +34,15 @@ function getChannelData(channel, callback) {
 function displayYouTubeResults(data) {
 	var results = '';
 	var pageQuery = $('.search-form').find('.query').val();
-	console.log(data);
 
 	//checks if sure returned any results
 	if (data.items.length !== 0) {
 		data.items.forEach(function(item) {
-			results += '<p>' + item.snippet.title + ' - <button type="submit" class="channel">' +
-			 item.snippet.channelTitle + '</button><br>' +
+			results += '<p>' + item.snippet.title + ' <button type="submit" class="channel">' +
+			 'Channel: ' + item.snippet.channelTitle + '</button><br><p class="channelThumbnails"></p>' +
 				'<a class="video" data-featherlight="iframe" href="https://www.youtube.com/embed/' + 
 				item.id.videoId + '">' +
-				'<img src="' + item.snippet.thumbnails.medium.url + '"></a><br></p><p class="channelThumbnails"></p><p class="channel-more"></p>';
+				'<img src="' + item.snippet.thumbnails.medium.url + '"></a><br></p>';
 			channelLister(item.snippet.channelId)
 		})
 		//checks if there needs to be a previous page button and calls its function
@@ -66,13 +66,16 @@ function displayYouTubeResults(data) {
 function displayChannelThumbnails(data) {
 	var results = '';
 	data.items.forEach(function(item) {
-		results += '<img src="' + item.snippet.thumbnails.default.url + '">';
+		results += '<a href="https://www.youtube.com/watch?v=' + item.id.videoId +
+		'" target="blank"><img src="' + item.snippet.thumbnails.default.url + '" ' +
+		'alt="' + item.snippet.title + '"></a> ';
 	})
-	$('.channel-more').html(results);
+	targetImageTag.html(results);
 }
 
 function channelLister(channel) {
 	$('.results').on('click', '.channel', function(e){
+		targetImageTag = $(this).parents().next('.channelThumbnails');
 		getChannelData(channel, displayChannelThumbnails);
 	})	
 }
